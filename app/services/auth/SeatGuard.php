@@ -104,8 +104,12 @@ class SeatGuard extends \Illuminate\Auth\Guard
         $group->name = $info['name'];
 
         // If permissions are defined, add that to the group
-        if(isset($info['permissions']))
+        if(isset($info['permissions'])){
             $group->permissions = serialize($info['permissions']);
+        } else {
+        	//Otherwise serialize an empty array ( see Issue #290 )
+        	$group->permissions = serialize(array());
+        }
 
         // .. and save
         $group->save();
